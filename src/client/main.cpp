@@ -102,30 +102,37 @@ int main(int argc, char **argv)
         cout << "========================" << endl;
         cout << "choice:";
 
-        // 处理 id 输入格式不对所出现的 bug
-        string s; getline(cin, s);
         int choice = 0;
-        int len_s = s.size();
-        for (int i = 0; i < len_s; ++i) {
-            if (s[i] > '9' || s[i] < '0') {
-                cout << "The id input format is incorrect!" << endl;
-                choice = 4;
-                break;
-            }
-            if (i == len_s - 1) {
-                choice = atoi(s.c_str());
-            }
-        }
+        cin >> choice;
+        cin.get(); // 读掉缓冲区残留的回车
 
         switch (choice)
         {
         case 1: // login业务
         {
-            int id = 0;
             char pwd[50] = {0};
-            cout << "userid:";
-            cin >> id;
-            cin.get(); // 读掉缓冲区残留的回车
+            
+            // 处理 id 输入格式不对所出现的 bug
+            int id = 0;
+            while (true) {
+                cout << "userid:";
+                string s; getline(cin, s);
+                int len_s = s.size();
+                bool A = false;
+                for (int i = 0; i < len_s; ++i) {
+                    if (s[i] > '9' || s[i] < '0') {
+                        cout << "The id input format is incorrect!" << endl;
+                        id = 4;
+                        break;
+                    }
+                    if (i == len_s - 1) {
+                        A = true;
+                        id = atoi(s.c_str());
+                    }
+                }
+                if (A) break;
+            }
+
             cout << "userpassword:";
             cin.getline(pwd, 50);
 
