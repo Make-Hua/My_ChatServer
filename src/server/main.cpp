@@ -12,18 +12,22 @@ void ressetHandler(int)
     exit(0);
 }
 
-int main() 
+int main(int argc, char **argv) 
 {
-    // 重启服务的时候，此时肯定不存在有用户在线，则用户状态直接全部变成 "offline"
+    if (argc < 3)
+    {
+        cerr << "command invalid! example: ./ChatServer 127.0.0.1 6000" << endl;
+        exit(-1);
+    }
+
+    // 解析通过命令行参数传递的ip和port
+    char *ip = argv[1];
+    uint16_t port = atoi(argv[2]);
+
     signal(SIGINT, ressetHandler);
 
-    // 事件循环对象
     EventLoop loop;
-
-    // 配置  IP  prot 
-    InetAddress addr("127.0.0.1", 6000);
-
-    // 创建服务器
+    InetAddress addr(ip, port);
     ChatServer server(&loop, addr, "ChatServer");
 
     server.start();
