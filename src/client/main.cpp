@@ -101,9 +101,21 @@ int main(int argc, char **argv)
         cout << "3. quit" << endl;
         cout << "========================" << endl;
         cout << "choice:";
+
+        // 处理 id 输入格式不对所出现的 bug
+        string s; getline(cin, s);
         int choice = 0;
-        cin >> choice;
-        cin.get(); // 读掉缓冲区残留的回车
+        int len_s = s.size();
+        for (int i = 0; i < len_s; ++i) {
+            if (s[i] > '9' || s[i] < '0') {
+                cout << "The id input format is incorrect!" << endl;
+                choice = 4;
+                break;
+            }
+            if (i == len_s - 1) {
+                choice = atoi(s.c_str());
+            }
+        }
 
         switch (choice)
         {
